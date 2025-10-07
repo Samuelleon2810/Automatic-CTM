@@ -99,8 +99,20 @@ El Banco permite que:
 
 ---
 
-## 🧑‍💻 Autor
-**Samuel Leonardo Acosta Cruz**  
+## 🧑‍💻 Autores
+**Samuel Leonardo Acosta Cruz**
 Estudiante de Ingeniería de Sistemas  
 Universidad Distrital Francisco José de Caldas  
 Colombia 🇨🇴
+
+**Nicolas**
+Estudiante de Ingeniería de Sistemas  
+Universidad Distrital Francisco José de Caldas  
+Colombia 🇨🇴
+
+**Mateo**
+Estudiante de Ingeniería de Sistemas  
+Universidad Distrital Francisco José de Caldas  
+Colombia 🇨🇴
+
+
