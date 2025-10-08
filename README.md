@@ -105,7 +105,7 @@ Estudiante de Ingeniería de Sistemas
 Universidad Distrital Francisco José de Caldas  
 Colombia 🇨🇴
 
-**Nicolas**
+**Nicolas Martínez Pineda**
 Estudiante de Ingeniería de Sistemas  
 Universidad Distrital Francisco José de Caldas  
 Colombia 🇨🇴
