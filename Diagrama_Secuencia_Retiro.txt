@@ -1,0 +1,22 @@
+Cliente        Cajero          AutentificacionService        Tarjeta          Banco          Cuenta         RegistroOperaciones
+   |              |                       |                     |               |               |                    |
+   |--insertarTarjeta(t)----------------->|                     |               |               |                    |
+   |              |--solicitarPin()----------------------------------------------------------->|                    |
+   |<-------------|                       |                     |               |               |                    |
+   |--ingresarPin(pin)------------------->|                     |               |               |                    |
+   |              |--autenticar(t,pin)------------------------->|               |               |                    |
+   |              |                       |--verificarPin(pin)->|               |               |                    |
+   |              |                       |<------resultado-----|               |               |                    |
+   |              |<--------autenticación exitosa/fallida-------|               |               |                    |
+   |              |                       |                     |               |               |                    |
+   |              |--procesarRetiro(t,monto)----------------------------------->|               |                    |
+   |              |                       |                     |--validarTransaccion(cuenta,monto)->|               |                    |
+   |              |                       |                     |               |--retirar(monto)--------------->|    |
+   |              |                       |                     |               |<-----------resultado-----------|    |
+   |              |                       |                     |               |--registrarOperacion(new Retiro)->|  |
+   |              |                       |                     |               |<--------------------------------|   |
+   |              |<----------------------operación completada--|               |               |                    |
+   |<-------------entregarDinero()------------------------------|               |               |                    |
+   |              |--imprimirComprobante()------------------------------------->|               |                    |
+   |<-------------Recibo generado----------------------------------------------|               |                    |
+   |              |                       |                     |               |               |                    |
