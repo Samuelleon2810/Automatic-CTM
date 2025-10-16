@@ -1,0 +1,135 @@
+---
+config:
+  look: handDrawn
+  theme: default
+---
+stateDiagram-v2
+    [*] --> Inactivo: Sistema Inicializado
+    
+    Inactivo --> EsperandoTarjeta: Cajero Listo
+    
+    EsperandoTarjeta --> LeyendoTarjeta: Tarjeta Insertada
+    
+    LeyendoTarjeta --> ValidandoTarjeta: Datos Leídos
+    LeyendoTarjeta --> EsperandoTarjeta: Error Lectura / Reintentar
+    LeyendoTarjeta --> EsperandoTarjeta: Tarjeta Expulsada
+    
+    ValidandoTarjeta --> SolicitandoPassword: Tarjeta Válida
+    ValidandoTarjeta --> TarjetaRetenida: Tarjeta Inválida/Bloqueada
+    
+    TarjetaRetenida --> EsperandoTarjeta: Tarjeta Confiscada
+    
+    SolicitandoPassword --> ValidandoPassword: Password Ingresado
+    SolicitandoPassword --> EsperandoTarjeta: Cancelar / Timeout
+    
+    ValidandoPassword --> Autenticado: Password Correcto
+    ValidandoPassword --> PasswordIncorrecto: Password Incorrecto
+    
+    PasswordIncorrecto --> SolicitandoPassword: Intentos < 3
+    PasswordIncorrecto --> TarjetaRetenida: Intentos = 3
+    
+    Autenticado --> MenuPrincipal: Mostrar Opciones
+    
+    state MenuPrincipal {
+        [*] --> SeleccionandoOperacion
+        SeleccionandoOperacion --> RetirarDinero: Opción 1
+        SeleccionandoOperacion --> IngresarDinero: Opción 2
+        SeleccionandoOperacion --> ConsultarSaldo: Opción 3
+        SeleccionandoOperacion --> ComprarEntradas: Opción 4
+        SeleccionandoOperacion --> [*]: Salir
+    }
+    
+    MenuPrincipal --> ProcesandoRetiro: Retiro Seleccionado
+    MenuPrincipal --> ProcesandoDeposito: Depósito Seleccionado
+    MenuPrincipal --> ProcesandoConsulta: Consulta Seleccionada
+    MenuPrincipal --> ProcesandoCompra: Compra Seleccionada
+    MenuPrincipal --> Finalizando: Salir
+    
+    state ProcesandoRetiro {
+        [*] --> SeleccionandoCuenta
+        SeleccionandoCuenta --> IngresandoMonto: Cuenta Seleccionada
+        IngresandoMonto --> ValidandoMonto: Monto Ingresado
+        ValidandoMonto --> VerificandoSaldo: Monto Válido
+        ValidandoMonto --> IngresandoMonto: Monto Inválido
+        VerificandoSaldo --> VerificandoLimite: Saldo Suficiente
+        VerificandoSaldo --> ErrorSaldo: Saldo Insuficiente
+        VerificandoLimite --> ConfirmandoRetiro: Límite OK
+        VerificandoLimite --> ErrorLimite: Límite Excedido
+        ConfirmandoRetiro --> DispensandoDinero: Confirmado
+        ConfirmandoRetiro --> [*]: Cancelado
+        DispensandoDinero --> ActualizandoSaldo: Dinero Entregado
+        ActualizandoSaldo --> ImprimiendoRecibo: Saldo Actualizado
+        ImprimiendoRecibo --> [*]: Transacción Completa
+        ErrorSaldo --> [*]: Mostrar Error
+        ErrorLimite --> [*]: Mostrar Error
+    }
+    
+    state ProcesandoDeposito {
+        [*] --> SeleccionandoCuentaDep
+        SeleccionandoCuentaDep --> EsperandoBilletes: Cuenta Seleccionada
+        EsperandoBilletes --> ContandoBilletes: Billetes Insertados
+        ContandoBilletes --> ValidandoBilletes: Conteo Completo
+        ValidandoBilletes --> MostrandoMonto: Billetes Válidos
+        ValidandoBilletes --> DevolviendobBilletes: Billetes Inválidos
+        DevolviendobBilletes --> EsperandoBilletes: Billetes Devueltos
+        MostrandoMonto --> ConfirmandoDeposito: Monto Mostrado
+        ConfirmandoDeposito --> ActualizandoSaldoDep: Confirmado
+        ConfirmandoDeposito --> DevolviendobBilletes: Rechazado
+        ActualizandoSaldoDep --> ImprimiendoReciboDep: Saldo Actualizado
+        ImprimiendoReciboDep --> [*]: Transacción Completa
+    }
+    
+    state ProcesandoConsulta {
+        [*] --> SeleccionandoCuentaCon
+        SeleccionandoCuentaCon --> ConsultandoSaldo: Cuenta Seleccionada
+        ConsultandoSaldo --> MostrandoSaldo: Saldo Obtenido
+        MostrandoSaldo --> OpcionRecibo: Saldo Mostrado
+        OpcionRecibo --> ImprimiendoReciboC: Sí Desea Recibo
+        OpcionRecibo --> [*]: No Desea Recibo
+        ImprimiendoReciboC --> [*]: Recibo Impreso
+    }
+    
+    state ProcesandoCompra {
+        [*] --> SeleccionandoEvento
+        SeleccionandoEvento --> SeleccionandoEntradas: Evento Elegido
+        SeleccionandoEntradas --> CalculandoTotal: Entradas Seleccionadas
+        CalculandoTotal --> VerificandoSaldoC: Total Calculado
+        VerificandoSaldoC --> VerificandoLimiteC: Saldo Suficiente
+        VerificandoSaldoC --> ErrorSaldoC: Saldo Insuficiente
+        VerificandoLimiteC --> ConfirmandoCompra: Límite OK
+        VerificandoLimiteC --> ErrorLimiteC: Límite Excedido
+        ConfirmandoCompra --> ProcesandoPago: Confirmado
+        ConfirmandoCompra --> [*]: Cancelado
+        ProcesandoPago --> ImprimiendoEntradas: Pago Procesado
+        ImprimiendoEntradas --> [*]: Entradas Impresas
+        ErrorSaldoC --> [*]: Mostrar Error
+        ErrorLimiteC --> [*]: Mostrar Error
+    }
+    
+    ProcesandoRetiro --> MenuPrincipal: Volver al Menú
+    ProcesandoRetiro --> Finalizando: Salir
+    ProcesandoDeposito --> MenuPrincipal: Volver al Menú
+    ProcesandoDeposito --> Finalizando: Salir
+    ProcesandoConsulta --> MenuPrincipal: Volver al Menú
+    ProcesandoConsulta --> Finalizando: Salir
+    ProcesandoCompra --> MenuPrincipal: Volver al Menú
+    ProcesandoCompra --> Finalizando: Salir
+    
+    Finalizando --> ExpulsandoTarjeta: Cerrar Sesión
+    ExpulsandoTarjeta --> RegistrandoLog: Tarjeta Expulsada
+    RegistrandoLog --> EsperandoTarjeta: Log Registrado
+    
+    note right of ValidandoPassword
+        Máximo 3 intentos
+        permitidos
+    end note
+    
+    note right of TarjetaRetenida
+        Tarjeta bloqueada
+        Notificar administrador
+    end note
+    
+    note right of DispensandoDinero
+        Verificar disponibilidad
+        de billetes
+    end note
